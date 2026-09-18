@@ -29,4 +29,6 @@ RUN mkdir -p \
     writable/uploads \
     && chmod -R 777 writable
 
-CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} -t public"]
+ENV CI_ENVIRONMENT=production
+
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} -t public public/index.php"]
