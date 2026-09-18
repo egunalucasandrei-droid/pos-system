@@ -5,7 +5,6 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     libicu-dev \
     libonig-dev \
-    libzip-dev \
     unzip \
     git \
     && docker-php-ext-install intl mbstring \
@@ -31,4 +30,4 @@ RUN mkdir -p \
 
 ENV CI_ENVIRONMENT=production
 
-CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} -t public public/index.php"]
+CMD ["sh", "-c", "php spark serve --host 0.0.0.0 --port ${PORT:-80}"]
