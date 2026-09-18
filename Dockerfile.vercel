@@ -7,8 +7,18 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libzip-dev \
     unzip \
+    git \
     && docker-php-ext-install intl mbstring \
     && rm -rf /var/lib/apt/lists/*
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+COPY composer.json composer.lock ./
+
+RUN composer install \
+    --no-dev \
+    --optimize-autoloader \
+    --no-interaction
 
 COPY . .
 
