@@ -1,0 +1,22 @@
+FROM php:8.2-cli
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y \
+    libicu-dev \
+    libzip-dev \
+    unzip \
+    && docker-php-ext-install intl mbstring \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY . .
+
+RUN mkdir -p writable/cache \
+    writable/logs \
+    writable/session \
+    writable/uploads \
+    && chmod -R 777 writable
+
+ENV PORT=80
+
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-80} -t public"]
