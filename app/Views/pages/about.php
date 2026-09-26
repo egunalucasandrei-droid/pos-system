@@ -26,7 +26,7 @@
 
     <p>
         This version demonstrates routing, controllers, views,
-        and static PHP arrays as temporary data sources.
+        CodeIgniter Models, and a MySQL database.
     </p>
 
 </body>

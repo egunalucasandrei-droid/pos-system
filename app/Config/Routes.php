@@ -3,7 +3,8 @@
 use CodeIgniter\Router\RouteCollection;
 
 /** @var RouteCollection $routes */
-$routes->get('/', 'Pages::home');
-$routes->get('/about', 'Pages::about');
-$routes->get('/customers', 'Customers::index');
-$routes->get('/users', 'Users::index');
+
+$routes->match(['get', 'head'], '/', 'Pages::home');
+$routes->match(['get', 'head'], '/about', 'Pages::about');
+$routes->match(['get', 'head'], '/customers', 'Customers::index');
+$routes->match(['get', 'head'], '/users', 'Users::index');

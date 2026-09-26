@@ -1,33 +1,32 @@
-FROM php:8.2-cli
+FROM dunglas/frankenphp:1-php8.4-bookworm
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
-    libicu-dev \
-    libonig-dev \
-    unzip \
-    git \
-    && docker-php-ext-install intl mbstring \
-    && rm -rf /var/lib/apt/lists/*
+# CodeIgniter requires intl. Composer needs zip to install locked packages.
+# FrankenPHP already includes mbstring and OPcache.
+RUN install-php-extensions intl zip
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
 COPY composer.json composer.lock ./
 
 RUN composer install \
     --no-dev \
-    --optimize-autoloader \
-    --no-interaction
+    --no-interaction \
+    --no-progress \
+    --optimize-autoloader
 
 COPY . .
+COPY Caddyfile /etc/caddy/Caddyfile
 
-RUN mkdir -p \
+RUN rm -f .env .env.local \
+    && mkdir -p \
     writable/cache \
     writable/logs \
     writable/session \
     writable/uploads \
-    && chmod -R 777 writable
+    && chown -R www-data:www-data writable
 
-ENV CI_ENVIRONMENT=production
+ENV CI_ENVIRONMENT=production \
+    PORT=80
 
-CMD ["sh", "-c", "php spark serve --host 0.0.0.0 --port ${PORT:-80}"]
+CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]

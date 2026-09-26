@@ -19,18 +19,22 @@
     <table border="1" cellpadding="10">
         <thead>
             <tr>
-                <th>Customer No.</th>
-                <th>Name</th>
+                <th>ID</th>
+                <th>Full Name</th>
                 <th>Email</th>
+                <th>Phone</th>
+                <th>Created At</th>
             </tr>
         </thead>
 
         <tbody>
             <?php foreach ($customers as $customer): ?>
                 <tr>
-                    <td><?= esc($customer['customer_no']) ?></td>
-                    <td><?= esc($customer['name']) ?></td>
+                    <td><?= esc($customer['id']) ?></td>
+                    <td><?= esc($customer['full_name']) ?></td>
                     <td><?= esc($customer['email']) ?></td>
+                    <td><?= esc($customer['phone']) ?></td>
+                    <td><?= esc($customer['created_at']) ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
