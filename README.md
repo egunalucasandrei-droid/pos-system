@@ -53,7 +53,9 @@ If you prefer to use XAMPP Apache instead of `php spark serve`, open `http://loc
 
 ## Vercel hosting
 
-The included `Dockerfile.vercel` deploys the CodeIgniter application as a container. Because Vercel cannot access a computer's local XAMPP database, connect a TiDB Cloud Starter database to the Vercel project using the **General** framework option. The application automatically reads these variables supplied by the integration:
+The included `Dockerfile.vercel` deploys the CodeIgniter application as a self-contained container. It starts a private MariaDB server and imports `database/pos_system.sql` before starting the website, so the read-only Customer Accounts and User Accounts pages work without exposing a database port or storing credentials in GitHub.
+
+For a persistent production system, connect a TiDB Cloud Starter database to the Vercel project using the **General** framework option. When present, the application gives priority to these variables supplied by the integration:
 
 - `TIDB_HOST`
 - `TIDB_PORT`
@@ -61,4 +63,4 @@ The included `Dockerfile.vercel` deploys the CodeIgniter application as a contai
 - `TIDB_PASSWORD`
 - `TIDB_DATABASE`
 
-Import `database/pos_system.sql` into the connected cloud database, then redeploy the Vercel project so the environment variables are included.
+Import `database/pos_system.sql` into the connected cloud database, then redeploy the Vercel project so the environment variables are included. This external database is optional for the activity's read-only hosted demonstration.

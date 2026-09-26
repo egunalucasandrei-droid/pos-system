@@ -211,6 +211,17 @@ class Database extends Config
                     'ssl_verify' => true,
                 ],
             ]);
+        } elseif (env('POS_EMBEDDED_DB') === '1') {
+            $this->default = array_replace($this->default, [
+                'hostname' => '/tmp/pos-system-mariadb.sock',
+                'username' => 'root',
+                'password' => '',
+                'database' => 'pos_system',
+                'DBDriver' => 'MySQLi',
+                'port'     => 0,
+                'DBDebug'  => false,
+                'encrypt'  => false,
+            ]);
         }
 
         // Ensure that we always set the database group to 'tests' if
