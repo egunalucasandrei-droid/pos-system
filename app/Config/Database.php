@@ -194,6 +194,25 @@ class Database extends Config
     {
         parent::__construct();
 
+        // Vercel's TiDB Cloud integration provides these variables. Keep the
+        // local XAMPP settings from .env when they are not present.
+        $tidbHost = env('TIDB_HOST');
+
+        if (is_string($tidbHost) && $tidbHost !== '') {
+            $this->default = array_replace($this->default, [
+                'hostname' => $tidbHost,
+                'username' => (string) env('TIDB_USER', ''),
+                'password' => (string) env('TIDB_PASSWORD', ''),
+                'database' => (string) env('TIDB_DATABASE', 'pos_system'),
+                'DBDriver' => 'MySQLi',
+                'port'     => (int) env('TIDB_PORT', 4000),
+                'encrypt'  => [
+                    'ssl_ca'     => '/etc/ssl/certs/ca-certificates.crt',
+                    'ssl_verify' => true,
+                ],
+            ]);
+        }
+
         // Ensure that we always set the database group to 'tests' if
         // we are currently running an automated test suite, so that
         // we don't overwrite live data on accident.

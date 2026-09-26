@@ -50,3 +50,15 @@ This student project is a simple Point of Sale website built with CodeIgniter 4.
 - About: `http://localhost:8080/about`
 
 If you prefer to use XAMPP Apache instead of `php spark serve`, open `http://localhost/pos-system/public/` and append `customers` or `users` to that URL.
+
+## Vercel hosting
+
+The included `Dockerfile.vercel` deploys the CodeIgniter application as a container. Because Vercel cannot access a computer's local XAMPP database, connect a TiDB Cloud Starter database to the Vercel project using the **General** framework option. The application automatically reads these variables supplied by the integration:
+
+- `TIDB_HOST`
+- `TIDB_PORT`
+- `TIDB_USER`
+- `TIDB_PASSWORD`
+- `TIDB_DATABASE`
+
+Import `database/pos_system.sql` into the connected cloud database, then redeploy the Vercel project so the environment variables are included.

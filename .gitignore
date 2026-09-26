@@ -127,3 +127,5 @@ _modules/*
 
 .vercel
 .env.local
+
+.env*
